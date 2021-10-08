@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Internal;
+namespace Tests\Unit\Internal;
 
 use PHPKitchen\CodeSpecs\Expectation\Internal\StepsList;
 use Tests\Base\TestCase;
@@ -13,13 +13,13 @@ use Tests\Base\TestCase;
  * @package Test\Internal
  * @author Dmitry Kolodko <prowwid@gmail.com>
  */
-class StepsTest extends TestCase {
+class StepsListTest extends TestCase {
     /**
      * @covers ::add
      * @covers ::convertToString
      * @covers ::getInstance
      */
-    public function testAdd() {
+    public function testAdd(): void {
         $list = $this->createListWithTwoSteps();
         $stepsListString = $list->convertToString();
         $expectedStepsStringRepresentation = "✓ checked step\n- un-checked step\n";
@@ -30,7 +30,7 @@ class StepsTest extends TestCase {
     /**
      * @covers ::clear
      */
-    public function testClear() {
+    public function testClear(): void {
         $list = $this->createListWithTwoSteps();
 
         $list->clear();

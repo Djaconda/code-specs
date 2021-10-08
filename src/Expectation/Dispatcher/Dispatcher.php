@@ -30,7 +30,7 @@ class Dispatcher {
      */
     protected $actual;
     /**
-     * @var \PHPUnit\Framework\Test
+     * @var Test
      */
     protected $test;
     /**

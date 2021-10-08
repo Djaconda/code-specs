@@ -2,6 +2,7 @@
 
 namespace PHPKitchen\CodeSpecs\Mixin;
 
+use ArrayAccess;
 use PHPKitchen\CodeSpecs\Contract\TestGuy;
 use PHPKitchen\CodeSpecs\Directive\Wait;
 use PHPKitchen\CodeSpecs\Expectation\Dispatcher\DelayedDispatcher;
@@ -16,6 +17,7 @@ use PHPKitchen\CodeSpecs\Expectation\Matcher\NumberMatcher;
 use PHPKitchen\CodeSpecs\Expectation\Matcher\ObjectMatcher;
 use PHPKitchen\CodeSpecs\Expectation\Matcher\StringMatcher;
 use PHPKitchen\CodeSpecs\Expectation\Matcher\ValueMatcher;
+use PHPUnit\Framework\Test;
 
 /**
  * Represents common expectation methods that can be used in test guy implementation.
@@ -31,7 +33,7 @@ trait TestGuyMethods {
      */
     private $steps;
     /**
-     * @var \PHPUnit\Framework\Test
+     * @var Test
      */
     protected $context;
     protected $variableName = '';
@@ -44,7 +46,7 @@ trait TestGuyMethods {
      * Scenario should be a logical ending of "I describe ". For example: "process of user registration".
      * Such scenario would result in "I describe process of user registration" output in console.
      *
-     * @return $this
+     * @return TestGuy
      */
     public function describe(string $scenario): TestGuy {
         $this->steps->add('I describe ' . $scenario);
@@ -60,7 +62,7 @@ trait TestGuyMethods {
      * Expectation should be a logical ending of "I expect that ". For example: "user is added to the DB".
      * Such scenario would result in "I expect that user is added to the DB" output in console.
      *
-     * @return $this
+     * @return TestGuy
      */
     public function expectThat(string $expectation): TestGuy {
         $this->steps->add('I expect that ' . $expectation);
@@ -75,11 +77,11 @@ trait TestGuyMethods {
      * @param string $expectation expectation text.
      * Expectation should be a logical ending of "I expect to ". For example: "see user in the DB".
      * Such scenario would result in "I expect to see user in the DB" output in console.
-     * @param callable $verificationSteps callable function with following definition "function (TestGuy $I) { ..." that contains a group of
+     * @param ?callable $verificationSteps callable function with following definition "function (TestGuy $I) { ..." that contains a group of
      * expectations united by one verification topic. All of the expectations would be executed once they
      * are defined.
      *
-     * @return $this
+     * @return TestGuy
      */
     public function verifyThat(string $expectation, callable $verificationSteps = null): TestGuy {
         $this->steps->add('I verify that ' . $expectation);
@@ -118,7 +120,7 @@ trait TestGuyMethods {
      *
      * @param string $variableName name of a variable to look at.
      *
-     * @return \PHPKitchen\CodeSpecs\Expectation\Dispatcher\DelayedDispatcher
+     * @return DelayedDispatcher
      */
     public function match(string $variableName): DelayedDispatcher {
         $this->variableName = $variableName;
@@ -134,7 +136,7 @@ trait TestGuyMethods {
      *
      * @return Wait
      */
-    public function wait($numberOfTimeUnits): Wait {
+    public function wait(int $numberOfTimeUnits): Wait {
         return new Wait($numberOfTimeUnits, $this->steps);
     }
 
@@ -143,7 +145,7 @@ trait TestGuyMethods {
      *
      * @param mixed $variable variable to be tested
      *
-     * @return \PHPKitchen\CodeSpecs\Expectation\Matcher\ValueMatcher
+     * @return ValueMatcher
      */
     public function see($variable): ValueMatcher {
         return $this->dispatch($variable)
@@ -155,19 +157,19 @@ trait TestGuyMethods {
      *
      * @param string $variable variable to be tested
      *
-     * @return \PHPKitchen\CodeSpecs\Expectation\Matcher\StringMatcher
+     * @return StringMatcher
      */
-    public function seeString($string): StringMatcher {
-        return $this->dispatch($string)
+    public function seeString(string $variable): StringMatcher {
+        return $this->dispatch($variable)
                     ->isString();
     }
 
     /**
      * Starts a chain of asserts from {@link ArrayMatcher}.
      *
-     * @param array|\ArrayAccess $variable variable to be tested
+     * @param array|ArrayAccess $variable variable to be tested
      *
-     * @return \PHPKitchen\CodeSpecs\Expectation\Matcher\ArrayMatcher
+     * @return ArrayMatcher
      */
     public function seeArray($variable): ArrayMatcher {
         return $this->dispatch($variable)
@@ -179,9 +181,9 @@ trait TestGuyMethods {
      *
      * @param boolean $variable variable to be tested
      *
-     * @return \PHPKitchen\CodeSpecs\Expectation\Matcher\BooleanMatcher
+     * @return BooleanMatcher
      */
-    public function seeBool($variable): BooleanMatcher {
+    public function seeBool(bool $variable): BooleanMatcher {
         return $this->dispatch($variable)
                     ->isBoolean();
     }
@@ -191,7 +193,7 @@ trait TestGuyMethods {
      *
      * @param int|float $variable variable to be tested
      *
-     * @return \PHPKitchen\CodeSpecs\Expectation\Matcher\NumberMatcher
+     * @return NumberMatcher
      */
     public function seeNumber($variable): NumberMatcher {
         return $this->dispatch($variable)
@@ -203,7 +205,7 @@ trait TestGuyMethods {
      *
      * @param object $variable variable to be tested
      *
-     * @return \PHPKitchen\CodeSpecs\Expectation\Matcher\ObjectMatcher
+     * @return ObjectMatcher
      */
     public function seeObject($variable): ObjectMatcher {
         return $this->dispatch($variable)
@@ -215,9 +217,9 @@ trait TestGuyMethods {
      *
      * @param string $variable variable to be tested
      *
-     * @return \PHPKitchen\CodeSpecs\Expectation\Matcher\ClassMatcher
+     * @return ClassMatcher
      */
-    public function seeClass($variable): ClassMatcher {
+    public function seeClass(string $variable): ClassMatcher {
         return $this->dispatch($variable)
                     ->isClass();
     }
@@ -227,9 +229,9 @@ trait TestGuyMethods {
      *
      * @param string $variable variable to be tested
      *
-     * @return \PHPKitchen\CodeSpecs\Expectation\Matcher\FileMatcher
+     * @return FileMatcher
      */
-    public function seeFile($variable): FileMatcher {
+    public function seeFile(string $variable): FileMatcher {
         return $this->dispatch($variable)
                     ->isFile();
     }
@@ -239,9 +241,9 @@ trait TestGuyMethods {
      *
      * @param string $variable variable to be tested
      *
-     * @return \PHPKitchen\CodeSpecs\Expectation\Matcher\DirectoryMatcher
+     * @return DirectoryMatcher
      */
-    public function seeDirectory($variable): DirectoryMatcher {
+    public function seeDirectory(string $variable): DirectoryMatcher {
         return $this->dispatch($variable)
                     ->isDirectory();
     }
@@ -249,7 +251,7 @@ trait TestGuyMethods {
 
     //region ----------------------- UTIL METHODS -----------------------
 
-    protected function initStepsList() {
+    protected function initStepsList(): void {
         $this->steps = StepsList::getInstance();
         $this->steps->clear();
     }

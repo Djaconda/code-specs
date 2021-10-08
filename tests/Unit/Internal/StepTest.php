@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Internal;
+namespace Tests\Unit\Internal;
 
 use PHPKitchen\CodeSpecs\Expectation\Internal\Step;
 use Tests\Base\TestCase;
@@ -18,7 +18,7 @@ class StepTest extends TestCase {
      * @covers ::toString
      * @covers ::__toString
      */
-    public function testToStringUnchecked() {
+    public function testToStringUnchecked(): void {
         $uncheckedStep = new Step('dummy step');
         $stepString = $uncheckedStep->toString();
         $this->assertEquals('- dummy step', $stepString, 'Step should be converted to a string with "-" sign at the beginning to identify that step has not passed');
@@ -30,7 +30,7 @@ class StepTest extends TestCase {
      * @covers ::__toString
      * @covers ::isChecked
      */
-    public function testToStringChecked() {
+    public function testToStringChecked(): void {
         $checkedStep = new Step('dummy step');
         $checkedStep->check();
         $stepString = $checkedStep->toString();

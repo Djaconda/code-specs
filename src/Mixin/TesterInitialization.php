@@ -19,7 +19,7 @@ trait TesterInitialization {
     /**
      * @before
      */
-    public function initTester() {
+    public function initTester(): void {
         $this->tester = $this->createTester();
     }
 
@@ -29,7 +29,7 @@ trait TesterInitialization {
      *
      * @return Tester tester instance.
      */
-    public function createTester() {
+    public function createTester(): Tester {
         return new Tester($this);
     }
 }

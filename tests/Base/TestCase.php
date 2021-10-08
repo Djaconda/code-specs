@@ -7,6 +7,8 @@ use PHPKitchen\CodeSpecs\Mixin\TesterInitialization;
 /**
  * Represents base class for all of the test cases.
  *
+ * @mixin TesterInitialization;
+ *
  * @author Dmitry Kolodko <prowwid@gmail.com>
  */
 class TestCase extends \PHPUnit\Framework\TestCase {

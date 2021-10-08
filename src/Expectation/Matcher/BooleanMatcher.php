@@ -9,40 +9,28 @@ namespace PHPKitchen\CodeSpecs\Expectation\Matcher;
  * @author Dmitry Kolodko <prowwid@gmail.com>
  */
 class BooleanMatcher extends ValueMatcher {
-    /**
-     * @return $this
-     */
-    public function isTrue() {
+    public function isTrue(): self {
         $this->startStep('is true')
              ->assertTrue();
 
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function isNotTrue() {
+    public function isNotTrue(): self {
         $this->startStep('is not true')
              ->assertNotTrue();
 
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function isFalse() {
+    public function isFalse(): self {
         $this->startStep('is false')
              ->assertFalse();
 
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function isNotFalse() {
+    public function isNotFalse(): self {
         $this->startStep('is not false')
              ->assertNotFalse();
 

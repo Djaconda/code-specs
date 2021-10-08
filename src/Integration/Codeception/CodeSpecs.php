@@ -17,13 +17,13 @@ use PHPKitchen\CodeSpecs\Mixin\TestGuyMethods;
  *
  * @package PHPKitchen\CodeSpecs\Integration\Codeception
  * @author Dmitry Kolodko <prowwid@gmail.com>
+ * @method TestGuy expectTo(string $expectation)
  */
 class CodeSpecs extends Module implements TestGuy {
     use TestGuyMethods;
 
     //region ----------------------- UTIL METHODS -----------------------
-
-    public function _before(TestInterface $test) {
+    public function _before(TestInterface $test): void {
         $this->context = $test;
         $this->initStepsList();
 

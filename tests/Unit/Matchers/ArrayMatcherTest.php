@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Matchers;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
+use Exception;
 use PHPKitchen\CodeSpecs\Expectation\Matcher\ArrayMatcher;
 use Tests\Base\BaseMatcherTest;
 
@@ -16,18 +18,20 @@ use Tests\Base\BaseMatcherTest;
  * @author Dmitry Kolodko <prowwid@gmail.com>
  */
 class ArrayMatcherTest extends BaseMatcherTest {
-    protected function initMatcherClass() {
+    use ArraySubsetAsserts;
+
+    protected function initMatcherClass(): void {
         $this->matcherClass = ArrayMatcher::class;
     }
 
     /**
      * @covers ::__construct
      */
-    public function testCreate() {
+    public function testCreate(): void {
         try {
             $this->createMatcherWithActualValue([]);
             $matcherCreated = true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $matcherCreated = false;
         }
         $this->assertTrue($matcherCreated, 'Unable to instantiate ' . ArrayMatcher::class);
@@ -36,7 +40,7 @@ class ArrayMatcherTest extends BaseMatcherTest {
     /**
      * @covers ::hasKey
      */
-    public function testHasKey() {
+    public function testHasKey(): void {
         $array = $this->createMatcherWithActualValue([1 => 1, 'two' => 2]);
         $array->hasKey(1);
         $array->hasKey('two');
@@ -45,7 +49,7 @@ class ArrayMatcherTest extends BaseMatcherTest {
     /**
      * @covers ::doesNotHaveKey
      */
-    public function testDoesNotHaveKey() {
+    public function testDoesNotHaveKey(): void {
         $array = $this->createMatcherWithActualValue([1 => 1, 'two' => 2]);
         $array->doesNotHaveKey(0);
         $array->doesNotHaveKey('three');
@@ -54,9 +58,9 @@ class ArrayMatcherTest extends BaseMatcherTest {
     /**
      * @covers ::contains
      */
-    public function testContains() {
+    public function testContains(): void {
         $array = $this->createMatcherWithActualValue([0, 1, $this]);
-        $array->contains(static::class);
+        $array->contains(1);
         $array->contains($this);
         $array->contains(0);
     }
@@ -64,7 +68,7 @@ class ArrayMatcherTest extends BaseMatcherTest {
     /**
      * @covers ::doesNotContain
      */
-    public function testDoesNotContain() {
+    public function testDoesNotContain(): void {
         $array = $this->createMatcherWithActualValue([0, 1]);
         $array->doesNotContain(123);
     }
@@ -72,7 +76,7 @@ class ArrayMatcherTest extends BaseMatcherTest {
     /**
      * @covers ::containsOnlyValuesOfType
      */
-    public function testContainsOnlyValuesOfType() {
+    public function testContainsOnlyValuesOfType(): void {
         $array = $this->createMatcherWithActualValue([$this, $this]);
         $array->containsOnlyValuesOfType(static::class);
     }
@@ -80,7 +84,7 @@ class ArrayMatcherTest extends BaseMatcherTest {
     /**
      * @covers ::containsOnlyValuesOfNativeType
      */
-    public function testContainsOnlyValuesOfNativeType() {
+    public function testContainsOnlyValuesOfNativeType(): void {
         $array = $this->createMatcherWithActualValue([true, false]);
         $array->containsOnlyValuesOfNativeType('boolean');
     }
@@ -88,7 +92,7 @@ class ArrayMatcherTest extends BaseMatcherTest {
     /**
      * @covers ::containsOnlyInstancesOf
      */
-    public function testContainsOnlyInstancesOf() {
+    public function testContainsOnlyInstancesOf(): void {
         $array = $this->createMatcherWithActualValue([$this, $this]);
         $array->containsOnlyInstancesOf(static::class);
     }
@@ -96,15 +100,15 @@ class ArrayMatcherTest extends BaseMatcherTest {
     /**
      * @covers ::doesNotContainOnlyValuesOfType
      */
-    public function testDoesNotContainOnlyValuesOfType() {
+    public function testDoesNotContainOnlyValuesOfType(): void {
         $array = $this->createMatcherWithActualValue([$this, $this]);
-        $array->doesNotContainOnlyValuesOfType(\Exception::class);
+        $array->doesNotContainOnlyValuesOfType(Exception::class);
     }
 
     /**
      * @covers ::doesNotContainOnlyValuesOfNativeType
      */
-    public function testDoesNotContainOnlyValuesOfNativeType() {
+    public function testDoesNotContainOnlyValuesOfNativeType(): void {
         $array = $this->createMatcherWithActualValue([1, 0]);
         $array->doesNotContainOnlyValuesOfNativeType('boolean');
     }
@@ -113,7 +117,7 @@ class ArrayMatcherTest extends BaseMatcherTest {
      * @covers ::countIsEqualToCountOf
      * @covers ::convertToCount
      */
-    public function testCountIsEqualToCountOf() {
+    public function testCountIsEqualToCountOf(): void {
         $array = $this->createMatcherWithActualValue([1, 0]);
         $array->countIsEqualToCountOf(2);
         $array->countIsEqualToCountOf([1, 2]);
@@ -123,7 +127,7 @@ class ArrayMatcherTest extends BaseMatcherTest {
      * @covers ::countIsNotEqualToCountOf
      * @covers ::convertToCount
      */
-    public function testIsNotEqualToCountOf() {
+    public function testIsNotEqualToCountOf(): void {
         $array = $this->createMatcherWithActualValue([2, 1, 0]);
         $array->countIsNotEqualToCountOf(2);
         $array->countIsNotEqualToCountOf([1, 2]);
@@ -132,7 +136,7 @@ class ArrayMatcherTest extends BaseMatcherTest {
     /**
      * @covers ::hasSubset
      */
-    public function testHasSubset() {
+    public function testHasSubset(): void {
         $array = $this->createMatcherWithActualValue([2, '1', 0]);
 
         $array->hasSubset([2, 1]);
@@ -141,7 +145,7 @@ class ArrayMatcherTest extends BaseMatcherTest {
     /**
      * @covers ::hasExactlyTheSameSubset
      */
-    public function testHasExactlyTheSameSubset() {
+    public function testHasExactlyTheSameSubset(): void {
         $array = $this->createMatcherWithActualValue([2, '1', 0]);
 
         $array->hasExactlyTheSameSubset([2, '1']);
@@ -150,7 +154,7 @@ class ArrayMatcherTest extends BaseMatcherTest {
     /**
      * @covers ::hasSameSizeAs
      */
-    public function testHasSameSizeAs() {
+    public function testHasSameSizeAs(): void {
         $array = $this->createMatcherWithActualValue([2, '1', 0]);
 
         $array->hasSameSizeAs([1, 2, 3]);
@@ -159,7 +163,7 @@ class ArrayMatcherTest extends BaseMatcherTest {
     /**
      * @covers ::doesNotHaveSameSizeAs
      */
-    public function testDoesNotHaveSameSizeAs() {
+    public function testDoesNotHaveSameSizeAs(): void {
         $array = $this->createMatcherWithActualValue([2, '1', 0]);
 
         $array->doesNotHaveSameSizeAs([1, 2, 3, 4]);
@@ -168,7 +172,7 @@ class ArrayMatcherTest extends BaseMatcherTest {
     /**
      * @covers ::doesNotHaveSameSizeAs
      */
-    /*public function testDelayed() {
+    /*public function testDelayed(): void {
         $assert = new Assert($this->getCodeSpecsModule(), $this, null, 'I see that array');
         $assert->switchToDelayedExecutionStrategy();
         $matcherArray = new ArrayMatcher($assert);
