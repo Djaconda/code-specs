@@ -97,9 +97,9 @@ CodeSpecs also decorates errors output so, for example, if "IncomeCalculator" se
 
 ## Requirements
 
-**`PHP >= 7.1` is required.**
+**`PHP >= 8.0` is required.**
 
-**`PHPUnit >= 6.0` is required but `PHPUnit >= 6.2` is recommended.**
+**`PHPUnit >= 9.5` is required.**
 
 ## Getting Started
 

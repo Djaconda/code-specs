@@ -166,7 +166,7 @@ class ValueMatcher extends Matcher {
     }
 
     public function isEqualTo($expected, $expectedValueName = ''): self {
-        $stepName = $expectedValueName ? "is equal to {$expectedValueName}" : "is equal to expected";
+        $stepName = $expectedValueName ? "is equal to $expectedValueName" : "is equal to expected";
 
         $this->startStep($stepName)
              ->assertEquals($expected);
@@ -175,7 +175,7 @@ class ValueMatcher extends Matcher {
     }
 
     public function isEqualCanonicalizingTo($expected, $expectedValueName = ''): self {
-        $stepName = $expectedValueName ? "is equal to {$expectedValueName}" : "is equal to expected";
+        $stepName = $expectedValueName ? "is equal to $expectedValueName" : "is equal to expected";
         $stepName .= ' (canonicalizing)';
         $this->startStep($stepName)
              ->assertEqualsCanonicalizing($expected);
@@ -184,7 +184,7 @@ class ValueMatcher extends Matcher {
     }
 
     public function isEqualIgnoringCaseTo($expected, $expectedValueName = ''): self {
-        $stepName = $expectedValueName ? "is equal to {$expectedValueName}" : "is equal to expected";
+        $stepName = $expectedValueName ? "is equal to $expectedValueName" : "is equal to expected";
         $stepName .= ' (ignoring case)';
         $this->startStep($stepName)
              ->assertEqualsIgnoringCase($expected);
@@ -193,7 +193,7 @@ class ValueMatcher extends Matcher {
     }
 
     public function isEqualWithDeltaTo($expected, float $delta, $expectedValueName = ''): self {
-        $stepName = $expectedValueName ? "is equal to {$expectedValueName}" : "is equal to expected";
+        $stepName = $expectedValueName ? "is equal to $expectedValueName" : "is equal to expected";
         $stepName .= ' (with delta)';
         $this->startStep($stepName)
              ->assertEqualsWithDelta($expected, $delta);
@@ -202,7 +202,7 @@ class ValueMatcher extends Matcher {
     }
 
     public function isNotEqualTo($expected, $expectedValueName = ''): self {
-        $stepName = $expectedValueName ? "is not equal to {$expectedValueName}" : "is not equal to expected";
+        $stepName = $expectedValueName ? "is not equal to $expectedValueName" : "is not equal to expected";
         $this->startStep($stepName)
              ->assertNotEquals($expected);
 
@@ -210,7 +210,7 @@ class ValueMatcher extends Matcher {
     }
 
     public function isNotEqualCanonicalizingTo($expected, $expectedValueName = ''): self {
-        $stepName = $expectedValueName ? "is not equal to {$expectedValueName}" : "is not equal to expected";
+        $stepName = $expectedValueName ? "is not equal to $expectedValueName" : "is not equal to expected";
         $stepName .= ' (canonicalizing)';
         $this->startStep($stepName)
              ->assertNotEqualsCanonicalizing($expected);
@@ -219,7 +219,7 @@ class ValueMatcher extends Matcher {
     }
 
     public function isNotEqualIgnoringCaseTo($expected, $expectedValueName = ''): self {
-        $stepName = $expectedValueName ? "is not equal to {$expectedValueName}" : "is not equal to expected";
+        $stepName = $expectedValueName ? "is not equal to $expectedValueName" : "is not equal to expected";
         $stepName .= ' (ignoring case)';
         $this->startStep($stepName)
              ->assertNotEqualsIgnoringCase($expected);
@@ -228,7 +228,7 @@ class ValueMatcher extends Matcher {
     }
 
     public function isNotEqualWithDeltaTo($expected, float $delta, $expectedValueName = ''): self {
-        $stepName = $expectedValueName ? "is not equal to {$expectedValueName}" : "is not equal to expected";
+        $stepName = $expectedValueName ? "is not equal to $expectedValueName" : "is not equal to expected";
         $stepName .= ' (with delta)';
         $this->startStep($stepName)
              ->assertNotEqualsWithDelta($expected, $delta);
@@ -293,7 +293,7 @@ class ValueMatcher extends Matcher {
     }
 
     public function isTheSameAs($expected, $expectedValueName = ''): self {
-        $stepName = $expectedValueName ? "is the same as {$expectedValueName}" : "is the same as expected";
+        $stepName = $expectedValueName ? "is the same as $expectedValueName" : "is the same as expected";
         $this->startStep($stepName)
              ->assertSame($expected);
 
@@ -301,7 +301,7 @@ class ValueMatcher extends Matcher {
     }
 
     public function isNotTheSameAs($expected, $expectedValueName = ''): ValueMatcher {
-        $stepName = $expectedValueName ? "is not the same as {$expectedValueName}" : "is not the same as expected";
+        $stepName = $expectedValueName ? "is not the same as $expectedValueName" : "is not the same as expected";
 
         $this->startStep($stepName)
              ->assertNotSame($expected);

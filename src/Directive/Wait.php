@@ -11,16 +11,12 @@ use PHPKitchen\CodeSpecs\Expectation\Internal\StepsList;
  * @author Dmitry Kolodko <prowwid@gmail.com>
  */
 class Wait {
-    private $microSecondMultiplier = 1;
-    private $milliSecondMultiplier = 100000;
-    private $secondMultiplier = 1000000;
-    private $minuteMultiplier = 60000000;
-    private $timeToWait;
-    private $steps;
+    private int $microSecondMultiplier = 1;
+    private int $milliSecondMultiplier = 100000;
+    private int $secondMultiplier = 1000000;
+    private int $minuteMultiplier = 60000000;
 
-    public function __construct(int $timeToWait, StepsList $stepsList) {
-        $this->timeToWait = $timeToWait;
-        $this->steps = $stepsList;
+    public function __construct(private int $timeToWait, private StepsList $steps) {
     }
 
     public function microseconds(): void {
@@ -40,7 +36,7 @@ class Wait {
     }
 
     protected function wait($unitOfTime, $multiplier): void {
-        $this->steps->add("I wait {$this->timeToWait} {$unitOfTime}");
+        $this->steps->add("I wait $this->timeToWait $unitOfTime");
 
         usleep($this->timeToWait * $multiplier);
     }

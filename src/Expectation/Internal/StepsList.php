@@ -12,8 +12,8 @@ class StepsList {
     /**
      * @var Step[] steps storage.
      */
-    private $steps = [];
-    private static $instance;
+    private array $steps = [];
+    private static ?StepsList $instance = null;
 
     public static function getInstance(): self {
         if (null === static::$instance) {
@@ -33,7 +33,7 @@ class StepsList {
 
     public function convertToString(): string {
         $message = implode(PHP_EOL, $this->steps);
-        $message = $message ? $message . PHP_EOL : $message;
+        $message = $message !== '' && $message !== '0' ? $message . PHP_EOL : $message;
 
         return (string)$message;
     }

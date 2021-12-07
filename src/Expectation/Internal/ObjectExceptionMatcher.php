@@ -49,8 +49,6 @@ class ObjectExceptionMatcher extends Matcher {
      * $I->seeObject($a)->throwsException(IronyException::class)->withCode(500)->when(function($object) {$object->doParty();});
      * <pre/>
      * and finish scenario.
-     *
-     * @param callable $callback
      */
     public function when(callable $callback): void {
         $exceptionClassOrObject = $this->exceptionClassOrObject;
@@ -58,10 +56,10 @@ class ObjectExceptionMatcher extends Matcher {
             $this->startStep('throws exception "' . $exceptionClassOrObject . '"')
                  ->expectException($this->exceptionClassOrObject);
         } else {
-            $this->startStep('throws exception "' . get_class($exceptionClassOrObject) . '"')
+            $this->startStep('throws exception "' . $exceptionClassOrObject::class . '"')
                  ->expectExceptionObject($this->exceptionClassOrObject);
         }
 
-        call_user_func_array($callback, [$this->getActualValue()]);
+        $callback($this->getActualValue());
     }
 }

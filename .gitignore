@@ -31,3 +31,7 @@ phpunit.phar
 
 # build files
 build
+
+# rector files
+rector.php
+rector.phar

@@ -15,8 +15,6 @@ use Tests\Base\TestCase;
  * @author Dmitry Kolodko <prowwid@gmail.com>
  */
 class TesterInitializationTest extends TestCase {
-    use TesterInitialization;
-
     /**
      * @covers ::createTester
      */

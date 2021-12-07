@@ -88,7 +88,7 @@ class ValueMatcherTest extends BaseMatcherTest {
      * @covers ::isResource
      */
     public function testIsResource(): void {
-        $matcher = $this->createMatcherWithActualValue(fopen(__FILE__, 'r'));
+        $matcher = $this->createMatcherWithActualValue(fopen(__FILE__, 'rb'));
         $matcher->isResource();
     }
 

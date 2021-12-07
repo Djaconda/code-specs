@@ -76,7 +76,7 @@ class StringMatcherTest extends BaseMatcherTest {
      * @covers ::isEqualToJsonFile
      */
     public function testIsJson(): void {
-        $data = json_encode(['a' => 1, 'b' => ['s' => 345]]);
+        $data = json_encode(['a' => 1, 'b' => ['s' => 345]], JSON_THROW_ON_ERROR);
         $string = $this->createMatcherWithActualValue($data);
         $string->isJson();
     }
@@ -85,7 +85,7 @@ class StringMatcherTest extends BaseMatcherTest {
      * @covers ::isEqualToJsonFile
      */
     public function testIsEqualToJsonFile(): void {
-        $data = json_encode(['a' => 1, 'b' => ['s' => 345]]);
+        $data = json_encode(['a' => 1, 'b' => ['s' => 345]], JSON_THROW_ON_ERROR);
         $string = $this->createMatcherWithActualValue($data);
         $string->isEqualToJsonFile(self::FIXTURES_DIR . 'jsonFile.json');
     }
@@ -94,7 +94,7 @@ class StringMatcherTest extends BaseMatcherTest {
      * @covers ::isNotEqualToJsonFile
      */
     public function testIsNotEqualToJsonFile(): void {
-        $data = json_encode(['a' => 1, 'b' => ['s' => 345]]);
+        $data = json_encode(['a' => 1, 'b' => ['s' => 345]], JSON_THROW_ON_ERROR);
         $string = $this->createMatcherWithActualValue($data);
         $string->isNotEqualToJsonFile(self::FIXTURES_DIR . 'jsonFile2.json');
     }
@@ -103,7 +103,7 @@ class StringMatcherTest extends BaseMatcherTest {
      * @covers ::isEqualToJsonString
      */
     public function testIsEqualToJsonString(): void {
-        $data = json_encode(['a' => 1, 'b' => ['s' => 345]]);
+        $data = json_encode(['a' => 1, 'b' => ['s' => 345]], JSON_THROW_ON_ERROR);
         $string = $this->createMatcherWithActualValue($data);
         $string->isEqualToJsonString('{"a":1,"b":{"s":345}}');
     }
@@ -112,7 +112,7 @@ class StringMatcherTest extends BaseMatcherTest {
      * @covers ::isNotEqualToJsonString
      */
     public function testIsNotEqualToJsonString(): void {
-        $data = json_encode(['a' => 1, 'b' => ['s' => 345], 'c' => 5]);
+        $data = json_encode(['a' => 1, 'b' => ['s' => 345], 'c' => 5], JSON_THROW_ON_ERROR);
         $string = $this->createMatcherWithActualValue($data);
         $string->isNotEqualToJsonString('{"a":1,"b":{"s":345}}');
     }

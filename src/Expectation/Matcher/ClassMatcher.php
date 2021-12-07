@@ -40,28 +40,28 @@ class ClassMatcher extends Matcher {
     }
 
     public function hasStaticAttribute(string $attribute): self {
-        $this->startStep("has static attribute \"{$attribute}\"")
+        $this->startStep("has static attribute \"$attribute\"")
              ->assertClassHasStaticAttribute($attribute);
 
         return $this;
     }
 
     public function doesNotHaveStaticAttribute(string $attribute): self {
-        $this->startStep("does not have static attribute \"{$attribute}\"")
+        $this->startStep("does not have static attribute \"$attribute\"")
              ->assertClassNotHasStaticAttribute($attribute);
 
         return $this;
     }
 
     public function hasAttribute(string $attribute): self {
-        $this->startStep("has attribute \"{$attribute }\"")
+        $this->startStep("has attribute \"$attribute\"")
              ->assertClassHasAttribute($attribute);
 
         return $this;
     }
 
     public function doesNotHaveAttribute(string $attribute): self {
-        $this->startStep("does not have attribute \"{$attribute}\"")
+        $this->startStep("does not have attribute \"$attribute\"")
              ->assertClassNotHasAttribute($attribute);
 
         return $this;

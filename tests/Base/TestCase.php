@@ -13,5 +13,6 @@ use PHPKitchen\CodeSpecs\Mixin\TesterInitialization;
  */
 class TestCase extends \PHPUnit\Framework\TestCase {
     use TesterInitialization;
-    const FIXTURES_DIR = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR;
+
+    public const FIXTURES_DIR = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR;
 }

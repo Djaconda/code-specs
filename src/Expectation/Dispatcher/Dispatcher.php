@@ -25,24 +25,15 @@ use PHPUnit\Framework\Test;
  * @author Dmitry Kolodko <prowwid@gmail.com>
  */
 class Dispatcher {
-    /**
+    protected bool $useDelayedAsserts = false;
+
+    public function __construct(protected Test $test, /**
      * @var mixed actual value or variable that will be matched to expectations.
      */
-    protected $actual;
-    /**
-     * @var Test
-     */
-    protected $test;
-    /**
-     * @var string description of expectation. If expectation fails this description will be displayed in console.
-     */
-    protected $variableName;
-    protected $useDelayedAsserts = false;
-
-    public function __construct(Test $test, $actual, $variableName = '') {
-        $this->test = $test;
-        $this->actual = $actual;
-        $this->variableName = $variableName;
+        protected $actual, /**
+         * @var string description of expectation. If expectation fails this description will be displayed in console.
+         */
+        protected $variableName = '') {
         $this->init();
     }
 
@@ -92,7 +83,7 @@ class Dispatcher {
         $variableName = $this->variableName ?: $id;
 
         $stepsList = StepsList::getInstance();
-        $assert = new Assert($stepsList, $this->test, $this->actual, "I see that {$variableName}");
+        $assert = new Assert($stepsList, $this->test, $this->actual, "I see that $variableName");
 
         if ($this->useDelayedAsserts) {
             $assert->switchToDelayedExecutionStrategy();

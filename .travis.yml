@@ -2,13 +2,7 @@ language: php
 
 matrix:
   include:
-    - php: 7.1
-      env: TO_TEST=PHPUNIT
-    - php: 7.1
-      env: TO_TEST=CODECEPTION
-    - php: 7.2
-      env: TO_TEST=PHPUNIT
-    - php: 7.2
+    - php: 8.0
       env: TO_TEST=CODECEPTION
   fast_finish: true
 

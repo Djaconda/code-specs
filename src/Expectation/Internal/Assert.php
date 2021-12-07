@@ -16,7 +16,7 @@ use Traversable;
 /**
  * Represents PHPUnit Assert facade.
  *
- * Goal of this class is prepare assert messages according
+ * Goal of this class is prepared assert messages according
  *
  * @codeCoverageIgnore
  *
@@ -27,42 +27,32 @@ class Assert {
     protected const IN_TIME_EXECUTION_STRATEGY = 1;
     protected const DELAYED_EXECUTION_STRATEGY = 2;
     /**
-     * @var mixed actual value or variable that will be matched to expectations.
-     */
-    protected $actual;
-    /**
-     * @var StepsList list of steps that was made prior current assert.
-     */
-    protected $stepsList;
-    /**
-     * @var Test the test object.
-     */
-    protected $test;
-    /**
-     * @var string description of expectation. If expectation fails this description will be displayed in console.
-     */
-    protected $description;
-    /**
      * @var SplQueue list of steps that was delayed to be executed after definition.
      */
-    protected $delayedAssertSteps;
-    /**
-     * @var int execution strategy. Either {@link DELAYED_EXECUTION_STRATEGY} or {@link IN_TIME_EXECUTION_STRATEGY}.
-     * Identifies whether to run assert methods when they called or later(runtime matchers functionality)
-     */
-    protected $strategy;
+    protected SplQueue $delayedAssertSteps;
     /**
      * @var string internal value that identifies current step name that would be added to {@link stepsList}
      */
-    private $currentStepName = '';
+    private string $currentStepName = '';
 
-    public function __construct(StepsList $stepsList, Test $test, $actual, $description = '', $strategy = self::IN_TIME_EXECUTION_STRATEGY) {
-        $this->stepsList = $stepsList;
-        $this->test = $test;
-        $this->actual = $actual;
-        $this->description = $description;
+    public function __construct(/**
+     * @var StepsList list of steps that was made prior current assert.
+     */
+        protected StepsList $stepsList, /**
+     * @var Test the test object.
+     */
+        protected Test $test, /**
+     * @var mixed actual value or variable that will be matched to expectations.
+     */
+        protected $actual, /**
+     * @var string description of expectation. If expectation fails this description will be displayed in console.
+     */
+        protected $description = '', /**
+     * @var int execution strategy. Either {@link DELAYED_EXECUTION_STRATEGY} or {@link IN_TIME_EXECUTION_STRATEGY}.
+     * Identifies whether to run assert methods when they called or later(runtime matchers functionality)
+     */
+        protected $strategy = self::IN_TIME_EXECUTION_STRATEGY) {
         $this->delayedAssertSteps = new SplQueue();
-        $this->strategy = $strategy;
     }
 
     public function __clone() {
@@ -126,7 +116,7 @@ class Assert {
                 $method,
             ], $this->buildAssertMethodParamsFromConfig($config));
         } else {
-            throw new \InvalidArgumentException("Assert method '{$method}' does not exist");
+            throw new \InvalidArgumentException("Assert method '$method' does not exist");
         }
     }
 
@@ -150,18 +140,13 @@ class Assert {
     }
 
     protected function registerExpectation(string $message): void {
-        $this->stepsList->add("$this->description {$message}.");
+        $this->stepsList->add("$this->description $message.");
     }
 
     protected function getMessageForAssert(): string {
         return $this->stepsList->convertToString();
     }
 
-    //endregion
-
-    /**
-     * @param string $exception
-     */
     public function expectException(string $exception): void {
         $this->callAssertMethod(__FUNCTION__, [
             'expected' => $exception,
@@ -178,19 +163,15 @@ class Assert {
     }
 
     /**
-     * @param int|string $code
-     *
      * @throws Exception
      */
-    public function expectExceptionCode($code): void {
+    public function expectExceptionCode(int|string $code): void {
         $this->callAssertMethod(__FUNCTION__, [
             'expected' => $code,
         ]);
     }
 
     /**
-     * @param string $message
-     *
      * @throws Exception
      */
     public function expectExceptionMessage(string $message): void {
@@ -200,8 +181,6 @@ class Assert {
     }
 
     /**
-     * @param string $messageRegExp
-     *
      * @throws Exception
      */
     public function expectExceptionMessageRegExp(string $messageRegExp): void {
@@ -229,13 +208,11 @@ class Assert {
      * Deprecated at PhpUnit https://github.com/sebastianbergmann/phpunit/issues/3494
      * Can use only with https://github.com/rdohms/phpunit-arraysubset-asserts
      *
-     * @param array|ArrayAccess $subset
-     * @param bool $checkForObjectIdentity
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      */
-    public function assertArraySubset($subset, bool $checkForObjectIdentity): void {
+    public function assertArraySubset(array|ArrayAccess $subset, bool $checkForObjectIdentity): void {
         $this->callAssertMethod(__FUNCTION__, [
             'expected' => $subset,
             'options' => [
@@ -317,7 +294,6 @@ class Assert {
     /**
      * Asserts that a haystack contains only values of a given type.
      *
-     * @param string $type
      * @param bool $isNativeType
      *
      * @throws ExpectationFailedException
@@ -335,7 +311,6 @@ class Assert {
     /**
      * Asserts that a haystack contains only instances of a given classname
      *
-     * @param string $className
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -349,7 +324,6 @@ class Assert {
     /**
      * Asserts that a haystack does not contain only values of a given type.
      *
-     * @param string $type
      * @param bool $isNativeType
      *
      * @throws ExpectationFailedException
@@ -367,7 +341,6 @@ class Assert {
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
      *
-     * @param int $expectedCount
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -381,7 +354,6 @@ class Assert {
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
      *
-     * @param int $expectedCount
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -438,7 +410,6 @@ class Assert {
      * Asserts that two variables are equal (with delta).
      *
      * @param mixed $expected
-     * @param float $delta
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -498,7 +469,6 @@ class Assert {
      * Asserts that two variables are not equal (with delta).
      *
      * @param mixed $expected
-     * @param float $delta
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -591,7 +561,6 @@ class Assert {
     /**
      * Asserts that the contents of one file is equal to the contents of another file.
      *
-     * @param string $expected
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -606,7 +575,6 @@ class Assert {
      * Asserts that the contents of one file is equal to the contents of another
      * file (canonicalizing).
      *
-     * @param string $expected
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -621,7 +589,6 @@ class Assert {
      * Asserts that the contents of one file is equal to the contents of another
      * file (ignoring case).
      *
-     * @param string $expected
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -635,7 +602,6 @@ class Assert {
     /**
      * Asserts that the contents of one file is not equal to the contents of another file.
      *
-     * @param string $expected
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -650,7 +616,6 @@ class Assert {
      * Asserts that the contents of one file is not equal to the contents of another
      * file (canonicalizing).
      *
-     * @param string $expected
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -665,7 +630,6 @@ class Assert {
      * Asserts that the contents of one file is not equal to the contents of another
      * file (ignoring case).
      *
-     * @param string $expected
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -679,7 +643,6 @@ class Assert {
     /**
      * Asserts that the contents of a string is equal to the contents of a file.
      *
-     * @param string $expectedFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -693,7 +656,6 @@ class Assert {
     /**
      * Asserts that the contents of a string is equal to the contents of a file (canonicalizing).
      *
-     * @param string $expectedFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -707,7 +669,6 @@ class Assert {
     /**
      * Asserts that the contents of a string is equal to the contents of a file (ignoring case).
      *
-     * @param string $expectedFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -721,7 +682,6 @@ class Assert {
     /**
      * Asserts that the contents of a string is not equal to the contents of a file.
      *
-     * @param string $expectedFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -735,7 +695,6 @@ class Assert {
     /**
      * Asserts that the contents of a string is not equal to the contents of a file (canonicalizing).
      *
-     * @param string $expectedFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -749,7 +708,6 @@ class Assert {
     /**
      * Asserts that the contents of a string is not equal to the contents of a file (ignoring case).
      *
-     * @param string $expectedFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -874,7 +832,7 @@ class Assert {
      * Asserts that a file does not exist.
      *
      * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function assertFileDoesNotExist(): void {
         $this->callAssertMethod(__FUNCTION__);
@@ -1068,8 +1026,6 @@ class Assert {
 
     /**
      * Asserts that a class has a specified attribute.
-     *
-     * @param string $attributeName
      */
     public function assertClassHasAttribute(string $attributeName): void {
         $this->callAssertMethod(__FUNCTION__, [
@@ -1080,7 +1036,6 @@ class Assert {
     /**
      * Asserts that a class does not have a specified attribute.
      *
-     * @param string $attributeName
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1094,7 +1049,6 @@ class Assert {
     /**
      * Asserts that a class has a specified static attribute.
      *
-     * @param string $attributeName
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1108,7 +1062,6 @@ class Assert {
     /**
      * Asserts that a class does not have a specified static attribute.
      *
-     * @param string $attributeName
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1122,7 +1075,6 @@ class Assert {
     /**
      * Asserts that an object has a specified attribute.
      *
-     * @param string $attributeName
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1136,7 +1088,6 @@ class Assert {
     /**
      * Asserts that an object does not have a specified attribute.
      *
-     * @param string $attributeName
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1182,7 +1133,6 @@ class Assert {
     /**
      * Asserts that a variable is of a given type.
      *
-     * @param string $expected
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1196,7 +1146,6 @@ class Assert {
     /**
      * Asserts that a variable is not of a given type.
      *
-     * @param string $expected
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1450,7 +1399,6 @@ class Assert {
     /**
      * Asserts that a string matches a given regular expression.
      *
-     * @param string $pattern
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1464,7 +1412,6 @@ class Assert {
     /**
      * Asserts that a string does not match a given regular expression.
      *
-     * @param string $pattern
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1479,12 +1426,11 @@ class Assert {
      * Assert that the size of two arrays (or `\Countable` or `\Traversable` objects)
      * is the same.
      *
-     * @param array|Countable|Traversable $expected
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      */
-    public function assertSameSize($expected): void {
+    public function assertSameSize(array|Countable|Traversable $expected): void {
         $this->callAssertMethod(__FUNCTION__, [
             'expected' => $expected,
         ]);
@@ -1494,12 +1440,11 @@ class Assert {
      * Assert that the size of two arrays (or `\Countable` or `\Traversable` objects)
      * is not the same.
      *
-     * @param array|Countable|Traversable $expected
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      */
-    public function assertNotSameSize($expected): void {
+    public function assertNotSameSize(array|Countable|Traversable $expected): void {
         $this->callAssertMethod(__FUNCTION__, [
             'expected' => $expected,
         ]);
@@ -1508,7 +1453,6 @@ class Assert {
     /**
      * Asserts that a string matches a given format string.
      *
-     * @param string $format
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1522,7 +1466,6 @@ class Assert {
     /**
      * Asserts that a string does not match a given format string.
      *
-     * @param string $format
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1536,7 +1479,6 @@ class Assert {
     /**
      * Asserts that a string matches a given format file.
      *
-     * @param string $formatFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1550,7 +1492,6 @@ class Assert {
     /**
      * Asserts that a string does not match a given format string.
      *
-     * @param string $formatFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1564,7 +1505,6 @@ class Assert {
     /**
      * Asserts that a string starts with a given prefix.
      *
-     * @param string $prefix
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1578,7 +1518,6 @@ class Assert {
     /**
      * Asserts that a string starts not with a given prefix.
      *
-     * @param string $prefix
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1590,7 +1529,6 @@ class Assert {
     }
 
     /**
-     * @param string $needle
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1602,7 +1540,6 @@ class Assert {
     }
 
     /**
-     * @param string $needle
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1614,7 +1551,6 @@ class Assert {
     }
 
     /**
-     * @param string $needle
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1626,7 +1562,6 @@ class Assert {
     }
 
     /**
-     * @param string $needle
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1640,7 +1575,6 @@ class Assert {
     /**
      * Asserts that a string ends with a given suffix.
      *
-     * @param string $suffix
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1654,7 +1588,6 @@ class Assert {
     /**
      * Asserts that a string ends not with a given suffix.
      *
-     * @param string $suffix
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1668,7 +1601,6 @@ class Assert {
     /**
      * Asserts that two XML files are equal.
      *
-     * @param string $expectedFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1682,7 +1614,6 @@ class Assert {
     /**
      * Asserts that two XML files are not equal.
      *
-     * @param string $expectedFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1696,7 +1627,6 @@ class Assert {
     /**
      * Asserts that two XML documents are equal.
      *
-     * @param string $expectedFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1710,7 +1640,6 @@ class Assert {
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @param string $expectedFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1724,12 +1653,11 @@ class Assert {
     /**
      * Asserts that two XML documents are equal.
      *
-     * @param string|DOMDocument $expectedXml
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      */
-    public function assertXmlStringEqualsXmlString($expectedXml): void {
+    public function assertXmlStringEqualsXmlString(DOMDocument|string $expectedXml): void {
         $this->callAssertMethod(__FUNCTION__, [
             'expected' => $expectedXml,
         ]);
@@ -1738,12 +1666,11 @@ class Assert {
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @param string|DOMDocument $expectedXml
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      */
-    public function assertXmlStringNotEqualsXmlString($expectedXml): void {
+    public function assertXmlStringNotEqualsXmlString(DOMDocument|string $expectedXml): void {
         $this->callAssertMethod(__FUNCTION__, [
             'expected' => $expectedXml,
         ]);
@@ -1752,7 +1679,6 @@ class Assert {
     /**
      * Asserts that a hierarchy of DOMElements matches.
      *
-     * @param DOMElement $expectedElement
      * @param bool $checkAttributes
      *
      * @throws ExpectationFailedException
@@ -1780,7 +1706,6 @@ class Assert {
     /**
      * Asserts that two given JSON encoded objects or arrays are equal.
      *
-     * @param string $expectedJson
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1794,7 +1719,6 @@ class Assert {
     /**
      * Asserts that two given JSON encoded objects or arrays are not equal.
      *
-     * @param string $expectedJson
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1808,7 +1732,6 @@ class Assert {
     /**
      * Asserts that the generated JSON encoded object and the content of the given file are equal.
      *
-     * @param string $expectedFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1822,7 +1745,6 @@ class Assert {
     /**
      * Asserts that the generated JSON encoded object and the content of the given file are not equal.
      *
-     * @param string $expectedFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1836,7 +1758,6 @@ class Assert {
     /**
      * Asserts that two JSON files are equal.
      *
-     * @param string $expectedFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1850,7 +1771,6 @@ class Assert {
     /**
      * Asserts that two JSON files are not equal.
      *
-     * @param string $expectedFile
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException

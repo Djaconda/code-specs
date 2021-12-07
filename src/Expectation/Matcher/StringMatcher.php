@@ -178,7 +178,6 @@ class StringMatcher extends ValueMatcher {
     }
 
     /**
-     * @param string $needle
      *
      * @return $this
      * @deprecated Use containsString() or containsStringIgnoringCase() instead
@@ -191,7 +190,6 @@ class StringMatcher extends ValueMatcher {
     }
 
     /**
-     * @param string $needle
      *
      * @return $this
      * @deprecated Use containsString() or containsStringIgnoringCase() instead

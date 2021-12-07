@@ -14,7 +14,7 @@ trait TesterInitialization {
     /**
      * @var Tester instance of tester. This property refreshing before each test.
      */
-    public $tester;
+    public Tester $tester;
 
     /**
      * @before

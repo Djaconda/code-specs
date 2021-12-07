@@ -1,9 +1,10 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Integrational\Codeception\Unit;
 
 use Codeception\Test\Unit;
 use Tests\Base\TestGuyTests;
+use Tests\Integrational\Codeception\UnitTester;
 
 /**
  * Unit test for {@link \PHPKitchen\CodeSpecs\Integration\Codeception\CodeSpecs}
@@ -14,8 +15,9 @@ use Tests\Base\TestGuyTests;
  */
 class CodeSpecsTest extends Unit {
     use TestGuyTests;
+
     /**
-     * @var \UnitTester
+     * @var UnitTester
      */
     protected $tester;
 }

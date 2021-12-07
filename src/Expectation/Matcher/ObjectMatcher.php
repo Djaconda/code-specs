@@ -61,11 +61,9 @@ class ObjectMatcher extends ValueMatcher {
      * Start sub-chain of exception matcher.
      *
      * @param Exception|string $exceptionClassOrObject exception class or object that going to be thrown by object
-     *
-     * @return ObjectExceptionMatcher
      */
-    public function throwsException($exceptionClassOrObject): ObjectExceptionMatcher {
-        $class = is_string($exceptionClassOrObject) ? $exceptionClassOrObject : get_class($exceptionClassOrObject);
+    public function throwsException(Exception|string $exceptionClassOrObject): ObjectExceptionMatcher {
+        $class = is_string($exceptionClassOrObject) ? $exceptionClassOrObject : $exceptionClassOrObject::class;
         $matcher = $this->createInternalMatcherWithDescription(ObjectExceptionMatcher::class, 'I see that exception "' . $class . '"');
 
         $matcher->exceptionClassOrObject = $exceptionClassOrObject;

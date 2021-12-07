@@ -31,12 +31,12 @@ trait TestGuyMethods {
     /**
      * @var StepsList
      */
-    private $steps;
+    private StepsList $steps;
     /**
      * @var Test
      */
-    protected $context;
-    protected $variableName = '';
+    protected Test $context;
+    protected string $variableName = '';
     //region ----------------------- SPECIFICATION METHODS -----------------------
 
     /**
@@ -45,8 +45,6 @@ trait TestGuyMethods {
      * @param string $scenario scenario name.
      * Scenario should be a logical ending of "I describe ". For example: "process of user registration".
      * Such scenario would result in "I describe process of user registration" output in console.
-     *
-     * @return TestGuy
      */
     public function describe(string $scenario): TestGuy {
         $this->steps->add('I describe ' . $scenario);
@@ -61,8 +59,6 @@ trait TestGuyMethods {
      * @param string $expectation expectation text.
      * Expectation should be a logical ending of "I expect that ". For example: "user is added to the DB".
      * Such scenario would result in "I expect that user is added to the DB" output in console.
-     *
-     * @return TestGuy
      */
     public function expectThat(string $expectation): TestGuy {
         $this->steps->add('I expect that ' . $expectation);
@@ -80,8 +76,6 @@ trait TestGuyMethods {
      * @param ?callable $verificationSteps callable function with following definition "function (TestGuy $I) { ..." that contains a group of
      * expectations united by one verification topic. All of the expectations would be executed once they
      * are defined.
-     *
-     * @return TestGuy
      */
     public function verifyThat(string $expectation, callable $verificationSteps = null): TestGuy {
         $this->steps->add('I verify that ' . $expectation);
@@ -96,8 +90,6 @@ trait TestGuyMethods {
      * Specifies name of a variable test guy would check.
      *
      * @param string $variableName name of a variable to look at.
-     *
-     * @return TestGuy
      */
     public function lookAt(string $variableName): TestGuy {
         $this->variableName = $variableName;
@@ -119,8 +111,6 @@ trait TestGuyMethods {
      * </code>
      *
      * @param string $variableName name of a variable to look at.
-     *
-     * @return DelayedDispatcher
      */
     public function match(string $variableName): DelayedDispatcher {
         $this->variableName = $variableName;
@@ -133,8 +123,6 @@ trait TestGuyMethods {
      *
      * @param int $numberOfTimeUnits number of units of time.
      * {@link Wait} specifies what unit should be used.
-     *
-     * @return Wait
      */
     public function wait(int $numberOfTimeUnits): Wait {
         return new Wait($numberOfTimeUnits, $this->steps);
@@ -144,10 +132,8 @@ trait TestGuyMethods {
      * Starts a chain of asserts from {@link ValueMatcher}.
      *
      * @param mixed $variable variable to be tested
-     *
-     * @return ValueMatcher
      */
-    public function see($variable): ValueMatcher {
+    public function see(mixed $variable): ValueMatcher {
         return $this->dispatch($variable)
                     ->isMixed();
     }
@@ -156,8 +142,6 @@ trait TestGuyMethods {
      * Starts a chain of asserts from {@link StringMatcher}.
      *
      * @param string $variable variable to be tested
-     *
-     * @return StringMatcher
      */
     public function seeString(string $variable): StringMatcher {
         return $this->dispatch($variable)
@@ -168,10 +152,8 @@ trait TestGuyMethods {
      * Starts a chain of asserts from {@link ArrayMatcher}.
      *
      * @param array|ArrayAccess $variable variable to be tested
-     *
-     * @return ArrayMatcher
      */
-    public function seeArray($variable): ArrayMatcher {
+    public function seeArray(array|ArrayAccess $variable): ArrayMatcher {
         return $this->dispatch($variable)
                     ->isArray();
     }
@@ -179,9 +161,7 @@ trait TestGuyMethods {
     /**
      * Starts a chain of asserts from {@link BooleanMatcher}.
      *
-     * @param boolean $variable variable to be tested
-     *
-     * @return BooleanMatcher
+     * @param bool $variable variable to be tested
      */
     public function seeBool(bool $variable): BooleanMatcher {
         return $this->dispatch($variable)
@@ -192,10 +172,8 @@ trait TestGuyMethods {
      * Starts a chain of asserts from {@link NumberMatcher}.
      *
      * @param int|float $variable variable to be tested
-     *
-     * @return NumberMatcher
      */
-    public function seeNumber($variable): NumberMatcher {
+    public function seeNumber(float|int $variable): NumberMatcher {
         return $this->dispatch($variable)
                     ->isNumber();
     }
@@ -204,10 +182,8 @@ trait TestGuyMethods {
      * Starts a chain of asserts from {@link ObjectMatcher}.
      *
      * @param object $variable variable to be tested
-     *
-     * @return ObjectMatcher
      */
-    public function seeObject($variable): ObjectMatcher {
+    public function seeObject(object $variable): ObjectMatcher {
         return $this->dispatch($variable)
                     ->isObject();
     }
@@ -216,8 +192,6 @@ trait TestGuyMethods {
      * Starts a chain of asserts from {@link ClassMatcher}.
      *
      * @param string $variable variable to be tested
-     *
-     * @return ClassMatcher
      */
     public function seeClass(string $variable): ClassMatcher {
         return $this->dispatch($variable)
@@ -228,8 +202,6 @@ trait TestGuyMethods {
      * Starts a chain of asserts from {@link FileMatcher}.
      *
      * @param string $variable variable to be tested
-     *
-     * @return FileMatcher
      */
     public function seeFile(string $variable): FileMatcher {
         return $this->dispatch($variable)
@@ -240,8 +212,6 @@ trait TestGuyMethods {
      * Starts a chain of asserts from {@link DirectoryMatcher}.
      *
      * @param string $variable variable to be tested
-     *
-     * @return DirectoryMatcher
      */
     public function seeDirectory(string $variable): DirectoryMatcher {
         return $this->dispatch($variable)

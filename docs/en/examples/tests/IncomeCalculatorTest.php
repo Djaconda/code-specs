@@ -41,7 +41,7 @@ class IncomeCalculatorTest extends Specification {
                 ->isEqualTo(self::EXPECTED_TAX_FOR_SECOND_LEVEL_TAX_RULE);
 
             $I->expectThat('for income more than 100 000 calculator use 20% tax rule');
-            $I->seeNumber('income tax', $service->calculateTax())
+            $I->seeNumber($service->calculateTax())
                 ->isNotEmpty()
                 ->isEqualTo(self::EXPECTED_TAX_FOR_THIRD_LEVEL_TAX_RULE);
         });

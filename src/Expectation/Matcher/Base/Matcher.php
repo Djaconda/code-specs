@@ -12,10 +12,7 @@ use PHPKitchen\CodeSpecs\Expectation\Internal\Assert;
  * @author Dmitry Kolodko <prowwid@gmail.com>
  */
 abstract class Matcher implements ExpectationMatcher {
-    private $assert;
-
-    public function __construct(Assert $assert) {
-        $this->assert = $assert;
+    public function __construct(private Assert $assert) {
     }
 
     public function __clone() {

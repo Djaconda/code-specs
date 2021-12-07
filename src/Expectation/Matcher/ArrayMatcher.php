@@ -24,7 +24,7 @@ class ArrayMatcher extends ValueMatcher {
     }
 
     public function hasSubset($subset, $subsetName = ''): self {
-        $stepName = $subsetName ? "has subset \"{$subsetName}\"" : 'has expected subset';
+        $stepName = $subsetName ? "has subset \"$subsetName\"" : 'has expected subset';
         $this->startStep($stepName)
              ->assertArraySubset($subset, false);
 
@@ -32,7 +32,7 @@ class ArrayMatcher extends ValueMatcher {
     }
 
     public function hasExactlyTheSameSubset($subset, $subsetName = ''): self {
-        $stepName = $subsetName ? "has exactly the same subset \"{$subsetName}\"" : 'has exactly the same expected subset';
+        $stepName = $subsetName ? "has exactly the same subset \"$subsetName\"" : 'has exactly the same expected subset';
 
         $this->startStep($stepName)
              ->assertArraySubset($subset, true);
@@ -41,7 +41,7 @@ class ArrayMatcher extends ValueMatcher {
     }
 
     public function hasSameSizeAs($expected, $expectedValueName = ''): self {
-        $stepName = $expectedValueName ? "has same size as {$expectedValueName}" : "has same size as expected";
+        $stepName = $expectedValueName ? "has same size as $expectedValueName" : "has same size as expected";
 
         $this->startStep($stepName)
              ->assertSameSize($expected);
@@ -50,7 +50,7 @@ class ArrayMatcher extends ValueMatcher {
     }
 
     public function doesNotHaveSameSizeAs($expected, $expectedValueName = ''): self {
-        $stepName = $expectedValueName ? "does not have same size as {$expectedValueName}" : "does not have same size as expected";
+        $stepName = $expectedValueName ? "does not have same size as $expectedValueName" : "does not have same size as expected";
 
         $this->startStep($stepName)
              ->assertNotSameSize($expected);
@@ -59,7 +59,7 @@ class ArrayMatcher extends ValueMatcher {
     }
 
     public function contains($needle, $needleName = ''): self {
-        $stepName = $needleName ? "contains {$needleName}" : "contains expected needle";
+        $stepName = $needleName ? "contains $needleName" : "contains expected needle";
 
         $this->startStep($stepName)
              ->assertContains($needle);
@@ -68,7 +68,7 @@ class ArrayMatcher extends ValueMatcher {
     }
 
     public function doesNotContain($needle, $needleName = ''): self {
-        $stepName = $needleName ? "does not contain {$needleName}" : "does not contain expected needle";
+        $stepName = $needleName ? "does not contain $needleName" : "does not contain expected needle";
 
         $this->startStep($stepName)
              ->assertNotContains($needle);
@@ -77,7 +77,7 @@ class ArrayMatcher extends ValueMatcher {
     }
 
     public function containsEqual($needle, $needleName = ''): self {
-        $stepName = $needleName ? "contains {$needleName}" : "contains expected needle";
+        $stepName = $needleName ? "contains $needleName" : "contains expected needle";
 
         $this->startStep($stepName)
              ->assertContainsEquals($needle);
@@ -86,7 +86,7 @@ class ArrayMatcher extends ValueMatcher {
     }
 
     public function doesNotContainsEqual($needle, $needleName = ''): self {
-        $stepName = $needleName ? "does not contain {$needleName}" : "does not contain expected needle";
+        $stepName = $needleName ? "does not contain $needleName" : "does not contain expected needle";
 
         $this->startStep($stepName)
              ->assertNotContainsEquals($needle);
@@ -117,7 +117,7 @@ class ArrayMatcher extends ValueMatcher {
 
     public function doesNotContainOnlyValuesOfType(string $type): self {
         $this->startStep('does not contain only values of type "' . $type . '"')
-             ->assertNotContainsOnly($type, null);
+             ->assertNotContainsOnly($type);
 
         return $this;
     }
@@ -130,7 +130,7 @@ class ArrayMatcher extends ValueMatcher {
     }
 
     public function countIsEqualToCountOf($countOrCountable, $expectedValueName = ''): self {
-        $stepName = $expectedValueName ? "has count equal to count of {$expectedValueName}" : "has count equal to count of expected";
+        $stepName = $expectedValueName ? "has count equal to count of $expectedValueName" : "has count equal to count of expected";
 
         $this->startStep($stepName)
              ->assertCount($this->convertToCount($countOrCountable));
@@ -139,7 +139,7 @@ class ArrayMatcher extends ValueMatcher {
     }
 
     public function countIsNotEqualToCountOf($countOrCountable, $expectedValueName = ''): self {
-        $stepName = $expectedValueName ? "does not have count equal count of {$expectedValueName}" : "does not have count equal count of expected";
+        $stepName = $expectedValueName ? "does not have count equal count of $expectedValueName" : "does not have count equal count of expected";
 
         $this->startStep($stepName)
              ->assertNotCount($this->convertToCount($countOrCountable));
@@ -148,12 +148,6 @@ class ArrayMatcher extends ValueMatcher {
     }
 
     protected function convertToCount($value): int {
-        if (is_iterable($value)) {
-            $count = count($value);
-        } else {
-            $count = $value;
-        }
-
-        return $count;
+        return is_iterable($value) ? count($value) : $value;
     }
 }

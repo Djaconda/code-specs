@@ -36,7 +36,7 @@ class Tester implements TestGuy {
      *
      * @return $this
      */
-    public function expectTo(string $expectation): TestGuy {
+    public function expectTo(string $expectation): self {
         $this->steps->add('I expect to ' . $expectation);
 
         return $this;
