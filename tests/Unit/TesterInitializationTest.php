@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use PHPKitchen\CodeSpecs\Mixin\TesterInitialization;
 use PHPKitchen\CodeSpecs\Specification\Tester;
 use Tests\Base\TestCase;
 

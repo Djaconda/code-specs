@@ -13,8 +13,8 @@ use PHPKitchen\CodeSpecs\Expectation\Internal\StepsList;
 class Wait {
     private int $microSecondMultiplier = 1;
     private int $milliSecondMultiplier = 100000;
-    private int $secondMultiplier = 1000000;
-    private int $minuteMultiplier = 60000000;
+    private int $secondMultiplier = 1_000_000;
+    private int $minuteMultiplier = 60_000_000;
 
     public function __construct(private int $timeToWait, private StepsList $steps) {
     }

@@ -2,7 +2,7 @@ language: php
 
 matrix:
   include:
-    - php: 8.0
+    - php: 8.1
       env: TO_TEST=CODECEPTION
   fast_finish: true
 

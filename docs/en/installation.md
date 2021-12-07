@@ -2,7 +2,7 @@
 
 ## Requirements
 
-**`PHP >= 8.0` is required.**
+**`PHP >= 8.1` is required.**
 
 **`PHPUnit >= 9.5` is required.**
 
